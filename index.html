@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>
+			Brainfjsk
+		</title>
+		<style>
+			body{
+				background-color: #555555;
+			}
+			
+			#controls{
+				position: absolute;
+				top: 20px;
+				left: 20px;
+				right: 20px;
+				height: 240px;
+				padding: 10px;
+				background-color: #777777;
+				color: #00FF00;
+				font-family: monospace;
+			}
+			
+			#codeInput{
+				width: 100%;
+				color: #FFFFFF;
+				box-sizing: border-box;
+				background-color: #AAAAAA;
+				border: 1px #000000 solid;
+				height: 200px;
+			}
+			
+			#console{
+				position: absolute;
+				top: 300px;
+				left: 20px;
+				right: 20px;
+				bottom: 20px;
+				padding: 10px;
+				background-color: #000000;
+				color: #00FF00;
+				font-family: monospace;
+			}
+			
+			#input{
+				display: none;
+				width: 50px;
+				position: relative;
+				background: transparent;
+				border: none;
+				outline: none;
+				color: inherit;
+				font-family: inherit;
+			}
+			
+			#output{
+				
+			}
+		</style>
+	</head>
+	<body>
+		<div id="controls">
+			<textarea autofocus id="codeInput"></textarea><br />
+			<button id="runButton" onclick="run()">Run!</button>
+			<button id="resetButton">Reset</button>
+		</div>
+		<div id="console">
+			<span id="output"></span><input type="text" id="input" value="" />
+		</div>
+	</body>
+</html>
+
+<script type="text/javascript">
+	function run(){
+		document.getElementById("output").innerHTML = "";
+		var code = document.getElementById("codeInput").value;
+		execute(code);
+	}
+	
+	function execute(code){
+		var tape = {0: 0};
+		var pointer = 0;
+		var insPointer = 0;
+		
+		code = code.split("");
+		
+		do{
+			switch(code[insPointer]){
+				case ">":
+					pointer++;
+					if(tape[pointer] == undefined){
+						tape[pointer] = 0;
+					}
+				break;
+				case "<":
+					pointer--;
+					if(tape[pointer] == undefined){
+						tape[pointer] = 0;
+					}
+				break;
+				case "+":
+					tape[pointer]++;
+				break;
+				case "-":
+					tape[pointer]--;
+				break;
+				case ".":
+					output(String.fromCharCode(tape[pointer]));
+				break;
+				case ",":
+					//todo
+				break;
+				case "[":
+					if(tape[pointer] == 0){
+						var bracketLevel = 0;
+						do{
+							insPointer++;
+							if(code[insPointer] == "["){
+								bracketLevel++;
+							} else if(code[insPointer] == "]"){
+								bracketLevel--;
+							}
+						}while(bracketLevel >= 0);
+					}
+				break;
+				case "]":
+					if(tape[pointer] != 0){
+						var bracketLevel = 0;
+						do{
+							insPointer--;
+							if(code[insPointer] == "]"){
+								bracketLevel++;
+							} else if(code[insPointer] == "["){
+								bracketLevel--;
+							}
+						}while(bracketLevel >= 0);
+					}
+				break;
+			}
+			insPointer++;
+		}while(insPointer < code.length);
+		
+		function output(character){
+			document.getElementById("output").innerHTML += character;
+		}
+	}
+</script>
