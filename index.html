@@ -3,8 +3,11 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>
-			Brainfjsk
+			Brainfjsk - Brainfuck interpreter in JavaScrpt
 		</title>
+		<meta name="keywords" content="Brainfuck, JavaScript, Online brainfuck interpreter" />
+		<meta name="description" content="A brainfuck interpreter in JavaScript" />
+		<meta name="robots" content="index, follow" />
 		<style>
 			body{
 				background-color: #555555;
@@ -90,6 +93,8 @@
 		var pointer = 0;
 		var insPointer = 0;
 		var inputPointer = 0;
+		var executedInstructions = 0;
+		var limit = 10000000;
 		
 		code = code.split("");
 		
@@ -114,7 +119,6 @@
 				case "-":
 					tape[pointer]--;
 					tape[pointer] = mod(tape[pointer], 255);
-					console.log(tape[pointer]);
 				break;
 				case ".":
 					output(String.fromCharCode(tape[pointer]));
@@ -155,6 +159,13 @@
 				break;
 			}
 			insPointer++;
+			executedInstructions++;
+			
+			if(executedInstructions > limit){
+				alert("Reached limit of "+limit+" instructions, will now stop.\nThere's probably an infinite loop in your code.");
+				break;
+			}
+			
 		}while(insPointer < code.length);
 		
 		function output(character){
