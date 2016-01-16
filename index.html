@@ -109,9 +109,12 @@
 				break;
 				case "+":
 					tape[pointer]++;
+					tape[pointer] = mod(tape[pointer], 255);
 				break;
 				case "-":
 					tape[pointer]--;
+					tape[pointer] = mod(tape[pointer], 255);
+					console.log(tape[pointer]);
 				break;
 				case ".":
 					output(String.fromCharCode(tape[pointer]));
@@ -121,7 +124,7 @@
 					if(!character){
 						character = 0;
 					}
-					tape[pointer] = character;
+					tape[pointer] = mod(character, 255);
 					inputPointer++;					
 				break;
 				case "[":
@@ -157,5 +160,9 @@
 		function output(character){
 			document.getElementById("output").innerHTML += character;
 		}
+	}
+
+	function mod(n, m) { // because -4 % 10 == -4
+        return ((n % m) + m) % m;
 	}
 </script>
