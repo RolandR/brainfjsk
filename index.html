@@ -17,7 +17,7 @@
 				right: 20px;
 				height: 240px;
 				padding: 10px;
-				background-color: #777777;
+				background-color: #666666;
 				color: #00FF00;
 				font-family: monospace;
 			}
@@ -26,9 +26,22 @@
 				width: 100%;
 				color: #FFFFFF;
 				box-sizing: border-box;
-				background-color: #AAAAAA;
-				border: 1px #000000 solid;
+				background-color: #888888;
+				border: 1px #555555 solid;
 				height: 200px;
+				margin-bottom: 7px;
+				outline: none;
+			}
+
+			#programInput{
+				color: #FFFFFF;
+				background-color: #888888;
+				border: 1px #555555 solid;
+				box-sizing: border-box;
+				height: 25px;
+				width: 200px;
+				padding: 5px;
+				outline: none;
 			}
 			
 			#console{
@@ -43,17 +56,6 @@
 				font-family: monospace;
 			}
 			
-			#input{
-				display: none;
-				width: 50px;
-				position: relative;
-				background: transparent;
-				border: none;
-				outline: none;
-				color: inherit;
-				font-family: inherit;
-			}
-			
 			#output{
 				white-space: pre;
 			}
@@ -65,11 +67,12 @@
 &gt;++++++++[-&lt;+++++++++&gt;]&lt;.&gt;&gt;+&gt;-[+]++&gt;++&gt;+++[&gt;[-&gt;+++&lt;&lt;+++&gt;]&lt;&lt;]&gt;-----.&gt;-&gt;
 +++..+++.&gt;-.&lt;&lt;+[&gt;[+&gt;+]&gt;&gt;]&lt;--------------.&gt;&gt;.+++.------.--------.&gt;+.&gt;+.
 			</textarea><br />
+			<input type="text" id="programInput" placeholder="Input for program" />
 			<button id="runButton" onclick="run()">Run!</button>
 			<button id="resetButton">Reset</button>
 		</div>
 		<div id="console">
-			<span id="output"></span><input type="text" id="input" value="" />
+			<span id="output"></span>
 		</div>
 	</body>
 </html>
@@ -78,13 +81,15 @@
 	function run(){
 		document.getElementById("output").innerHTML = "";
 		var code = document.getElementById("codeInput").value;
-		execute(code);
+		var input = document.getElementById("programInput").value;
+		execute(code, input);
 	}
 	
-	function execute(code){
+	function execute(code, input){
 		var tape = {0: 0};
 		var pointer = 0;
 		var insPointer = 0;
+		var inputPointer = 0;
 		
 		code = code.split("");
 		
@@ -112,7 +117,12 @@
 					output(String.fromCharCode(tape[pointer]));
 				break;
 				case ",":
-					//todo
+					var character = input.charCodeAt(inputPointer);
+					if(!character){
+						character = 0;
+					}
+					tape[pointer] = character;
+					inputPointer++;					
 				break;
 				case "[":
 					if(tape[pointer] == 0){
