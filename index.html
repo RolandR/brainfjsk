@@ -95,6 +95,7 @@
 		var inputPointer = 0;
 		var executedInstructions = 0;
 		var limit = 10000000;
+		var cellSize = 256;
 		
 		code = code.split("");
 		
@@ -114,11 +115,11 @@
 				break;
 				case "+":
 					tape[pointer]++;
-					tape[pointer] = mod(tape[pointer], 255);
+					tape[pointer] = mod(tape[pointer], cellSize);
 				break;
 				case "-":
 					tape[pointer]--;
-					tape[pointer] = mod(tape[pointer], 255);
+					tape[pointer] = mod(tape[pointer], cellSize);
 				break;
 				case ".":
 					output(String.fromCharCode(tape[pointer]));
@@ -128,7 +129,7 @@
 					if(!character){
 						character = 0;
 					}
-					tape[pointer] = mod(character, 255);
+					tape[pointer] = mod(character, cellSize);
 					inputPointer++;					
 				break;
 				case "[":
